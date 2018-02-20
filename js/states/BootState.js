@@ -6,7 +6,7 @@ var BootState = {
     this.scale.pageAlignHorizontally = true;
     this.scale.pageAlignVertically = true;
 
-    this.game.world.setBounds(0, 0, 360, 2950);
+    this.game.world.setBounds(0, 0, 360, 600);
     this.game.stage.backgroundColor = "#fff";
   },
   preload: function() {

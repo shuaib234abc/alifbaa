@@ -11,7 +11,7 @@ var PreloadState = {
   	this.logotext = this.game.add.sprite(this.game.world.centerX, 100, "logotext");
   	this.logotext.anchor.setTo(0.5);
 
-  	this.loadingBar = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY + 60, "loading");
+  	this.loadingBar = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY + 130, "loading");
   	this.loadingBar.anchor.setTo(0.5);
 
   	this.load.setPreloadSprite(this.loadingBar);
@@ -24,7 +24,9 @@ var PreloadState = {
     this.load.image('platform', 'assets/images/platform.png');    
     this.load.image('leftArrowButton', 'assets/images/arrow-left.png');
     this.load.image('rightArrowButton', 'assets/images/arrow-right.png');    
-    this.load.image('actionButton', 'assets/images/arrow-up.png');    
+    this.load.image('actionButton', 'assets/images/arrow-up.png')
+    this.load.image('actionButtonDown', 'assets/images/arrow-down.png'); 
+    this.load.image('ladder', 'assets/images/rope_ladder_alt.png');    
     this.load.image('barrel', 'assets/images/barrel.png');    
     this.load.image('box_alif', 'assets/images/alphabets/box_alif.png');
       this.load.image('box_ayn', 'assets/images/alphabets/box_ayn.png');      
