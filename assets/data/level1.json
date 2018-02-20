@@ -1,0 +1,211 @@
+{
+	"playerStart":{
+		"x" : 30,
+		"y" : 2840
+	},
+	"allPlatformData":[
+      {"x" : 260, "y" : 100},
+      {"x" : -10, "y" : 200},
+      {"x" : -70, "y" : 300},
+      {"x" : 40, "y" : 400},
+      {"x" : 115, "y" : 500},
+      {"x" : -10, "y" : 600},
+      {"x" : -70, "y" : 700},
+      {"x" : 260, "y" : 800},
+      {"x" : -10, "y" : 900},
+      {"x" : -70, "y" : 1000},
+      {"x" : 40, "y" : 1100}, 
+      {"x" : 115, "y" : 1200},
+      {"x" : -70, "y" : 1300},
+      {"x" : 40, "y" : 1400},
+      {"x" : 115, "y" : 1500},
+      {"x" : -10, "y" : 1600},
+      {"x" : -70, "y" : 1700},
+      {"x" : 260, "y" : 1800},
+      {"x" : -10, "y" : 1900},
+      {"x" : -70, "y" : 2000},
+      {"x" : 40, "y" : 2100},
+      {"x" : 115, "y" : 2200},
+      {"x" : -10, "y" : 2300},
+      {"x" : -70, "y" : 2400},
+      {"x" : 260, "y" : 2500},
+      {"x" : -10, "y" : 2600},
+      {"x" : -70, "y" : 2700},
+      {"x" : -30, "y" : 2800}                                                     
+    ],
+    "barrelsFrequency" : 3,
+    "barrelSpawn" : {
+    	"x": 60,
+    	"y": 0
+    },
+    "alphabets": [
+      {
+        "image" : "box_alif",
+        "name" : "Alif",
+        "x" : 280,
+        "y" : 2750
+      },
+      {
+        "image" : "box_baa",
+        "name" : "Baa",
+        "x" : 180,
+        "y" : 2650
+      },
+      {
+        "image" : "box_taa",
+        "name" : "Taa",
+        "x" : 100,
+        "y" : 2550
+      },
+      {
+        "image" : "box_thaa",
+        "name" : "Thaa",
+        "x" : 100,
+        "y" : 2450
+      },
+      {
+        "image" : "box_jim",
+        "name" : "Jim",
+        "x" : 100,
+        "y" : 2350
+      },
+      {
+        "image" : "box_hah",
+        "name" : "Hah",
+        "x" : 100,
+        "y" : 2250
+      },
+      {
+        "image" : "box_kha",
+        "name" : "Kha",
+        "x" : 100,
+        "y" : 2150
+      },
+      {
+        "image" : "box_dal",
+        "name" : "Dal",
+        "x" : 100,
+        "y" : 2050
+      },
+      {
+        "image" : "box_dhal",
+        "name" : "Dhal",
+        "x" : 100,
+        "y" : 1950
+      },
+      {
+        "image" : "box_ra",
+        "name" : "Ra",
+        "x" : 100,
+        "y" : 1850
+      },
+      {
+        "image" : "box_zayin",
+        "name" : "Zayin",
+        "x" : 100,
+        "y" : 1750
+      },
+      {
+        "image" : "box_sin",
+        "name" : "Sin",
+        "x" : 100,
+        "y" : 1650
+      },
+      {
+        "image" : "box_shin",
+        "name" : "Shin",
+        "x" : 100,
+        "y" : 1550
+      },
+      {
+        "image" : "box_sad",
+        "name" : "Sad",
+        "x" : 100,
+        "y" : 1450
+      },
+      {
+        "image" : "box_dad",
+        "name" : "Dad",
+        "x" : 100,
+        "y" : 1350
+      },
+      {
+        "image" : "box_ta",
+        "name" : "Ta",
+        "x" : 100,
+        "y" : 1250
+      },
+      {
+        "image" : "box_za",
+        "name" : "Za",
+        "x" : 100,
+        "y" : 1150
+      },
+      {
+        "image" : "box_ayn",
+        "name" : "Ayn",
+        "x" : 100,
+        "y" : 1050
+      },
+      {
+        "image" : "box_ghain",
+        "name" : "Ghain",
+        "x" : 100,
+        "y" : 950
+      },
+      {
+        "image" : "box_fa",
+        "name" : "Fa",
+        "x" : 100,
+        "y" : 850
+      },
+      {
+        "image" : "box_qaf",
+        "name" : "Qaf",
+        "x" : 100,
+        "y" : 750
+      },
+      {
+        "image" : "box_kaf",
+        "name" : "Kaf",
+        "x" : 100,
+        "y" : 650
+      },
+      {
+        "image" : "box_lam",
+        "name" : "Lam",
+        "x" : 100,
+        "y" : 550
+      },
+      {
+        "image" : "box_mim",
+        "name" : "Mim",
+        "x" : 100,
+        "y" : 450
+      },
+      {
+        "image" : "box_nun",
+        "name" : "Nun",
+        "x" : 100,
+        "y" : 350
+      },
+      {
+        "image" : "box_waw",
+        "name" : "Waw",
+        "x" : 100,
+        "y" : 250
+      },
+      {
+        "image" : "box_ha",
+        "name" : "Ha",
+        "x" : 100,
+        "y" : 150
+      },
+            {
+        "image" : "box_yaa",
+        "name" : "Yaa",
+        "x" : 280,
+        "y" : 50
+      }
+    ]
+}
