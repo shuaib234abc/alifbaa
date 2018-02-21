@@ -41,14 +41,26 @@ var GameState = {
   //executed after everything is loaded
   create: function() {    
 
+    this.wrong_answer = this.game.add.audio('wrong_answer');
+
     this.background = this.game.add.sprite(0, 0, 'home_screen_bg');
+
+    this.home_link = this.game.add.button(320, 40, 'home_link');
+    this.home_link.anchor.setTo(0.5);
+    this.home_link.scale.setTo(0.65);
+    this.home_link.events.onInputDown.add(function(){
+      this.game.state.start('HomeState');
+    }, this);
+    this.home_link.events.onInputOver.add(function(){
+      this.game.state.start('HomeState');
+    }, this);
 
     this.ground = this.add.sprite(0, 555, 'ground');
 
     this.allLevelData = null;
     this.allLevelData = JSON.parse( this.game.cache.getText('levelData') );
 
-    this.scoreText = this.game.add.text(10, 10, "Score :" + this.score);
+    this.scoreText = this.game.add.text(10, 10, "Score : " + this.score);
 
     this.platforms = this.game.add.group();
     this.platforms.enableBody = true;
@@ -100,12 +112,14 @@ var GameState = {
 
     var pickForQuestion =  game.rnd.pick(picks);
 
-    console.log(pickForQuestion);
-    console.log(picks);
+    //console.log(pickForQuestion);
+    //console.log(picks);
 
     this.alphabetBoxes = this.game.add.group();
     this.alphabetBoxes.enableBody = true;
      
+    var tmp = "";
+
     for(var i = 0; i < picks.length; i++){
 
       var xposition = -500;
@@ -130,7 +144,13 @@ var GameState = {
           break;                              
       }
 
-      alphabetBox = this.alphabetBoxes.create( xposition, yposition, this.allLevelData.alphabets[picks[i]].image );
+      tmp ="";
+      tmp = this.allLevelData.alphabets[picks[i]].image;
+
+      alphabetBox = this.alphabetBoxes.create( xposition, yposition,  tmp);
+      alphabetBox.customParams = {};
+      tmp = tmp.replace("box_", "sound_");
+      alphabetBox.customParams.sound = this.game.add.audio( tmp );
       alphabetBox.anchor.setTo(0.5);
     }
 
@@ -138,9 +158,9 @@ var GameState = {
     this.alphabetBoxes.setAll('body.immovable', true);   
 
 
-    this.alphaBetForQuestion = this.add.sprite(40, 463, this.allLevelData.alphabets[pickForQuestion].image);
+    this.alphaBetForQuestion = this.add.sprite(40, 458, this.allLevelData.alphabets[pickForQuestion].image);
     this.alphaBetForQuestion.anchor.setTo(0.5);
-    this.alphaBetForQuestion.scale.setTo(0.7);
+    this.alphaBetForQuestion.scale.setTo(0.9);
     this.game.physics.arcade.enable(this.alphaBetForQuestion);
     this.alphaBetForQuestion.body.immovable = true; 
     this.alphaBetForQuestion.body.allowGravity = false; 
@@ -182,7 +202,7 @@ var GameState = {
 
   },
   refreshScoreText: function(){
-    this.scoreText.setText("Score: " + this.score);
+    this.scoreText.setText("Score : " + this.score);
   },
   createOnscreenControls: function(){
     this.leftArrow= this.game.add.button(20, 535, 'leftArrowButton');
@@ -304,18 +324,31 @@ var GameState = {
         this.uiBlocked = true;
         this.score += 10;
         this.refreshScoreText();
-        this.game.time.events.add(2000, this.restartForAnotherAlphabet, this);
+        //console.log(obj2.customParams);
+        obj2.customParams.sound.play();
+        this.game.time.events.add(2000, this.playAnotherTween, this);
       }
       else{
         this.uiBlocked = true;
         this.score -= 10;
         if(this.score <= 0) this.score = 0;
         this.refreshScoreText();
-        this.game.time.events.add(2000, this.restartForAnotherAlphabet, this);                
+        this.wrong_answer.play();
+        this.game.time.events.add(2000, this.playAnotherTween, this);                
       }    
     }
 
     
+  },
+  playAnotherTween: function(){
+    var alphabetChangeTween = this.game.add.tween(this.alphaBetForQuestion);
+    alphabetChangeTween.to({
+            angle : +720
+    }, 700);
+    alphabetChangeTween.start();
+    alphabetChangeTween.onComplete.add(function(){
+        this.restartForAnotherAlphabet();
+    }, this);
   },
   restartForAnotherAlphabet: function(){
     this.game.state.start('GameState', true, false, this.score);
