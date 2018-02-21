@@ -25,6 +25,8 @@ var HomeState = {
     
     this.btn_learn= this.game.add.button(this.game.world.centerX, 220, 'btn_learn');
     this.btn_learn.anchor.setTo("0.5");
+    this.btn_learn.events.onInputOver.add(this.startLearnState, this);
+    this.btn_learn.events.onInputDown.add(this.startLearnState, this);   
 
     this.btn_bonus= this.game.add.button(this.game.world.centerX, 360, 'btn_bonus');
     this.btn_bonus.anchor.setTo("0.5");
@@ -32,5 +34,8 @@ var HomeState = {
   },
   startGame: function(){
     this.game.state.start('GameState');
+  },
+  startLearnState: function(){
+    this.game.state.start('LearnState');
   }
 };

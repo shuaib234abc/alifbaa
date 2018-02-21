@@ -7,5 +7,6 @@ game.state.add('PreloadState', PreloadState);
 game.state.add('BootState', BootState);
 game.state.add('HomeState', HomeState);
 game.state.add('GameState', GameState);
+game.state.add('LearnState', LearnState);
 game.state.start('BootState');
 

@@ -1,4 +1,4 @@
-var GameState = {
+var LearnState = {
 
   //initiate game settings
   init: function(message) {
@@ -6,7 +6,7 @@ var GameState = {
     this.message = message;
     this.cursors = this.game.input.keyboard.createCursorKeys();
 
-    this.game.world.setBounds(0, 0, 360, 600);
+    this.game.world.setBounds(0, 0, 360, 1600);
 
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
     this.game.physics.arcade.gravity.y = 300;
@@ -43,8 +43,6 @@ var GameState = {
   //executed after everything is loaded
   create: function() {    
 
-    this.wrong_answer = this.game.add.audio('wrong_answer');
-
     this.background = this.game.add.sprite(0, 0, 'home_screen_bg');
 
     this.home_link = this.game.add.button(320, 40, 'home_link');
@@ -57,18 +55,24 @@ var GameState = {
       this.game.state.start('HomeState');
     }, this);
 
-    this.ground = this.add.sprite(0, 555, 'ground');
+    this.ground = this.add.sprite(0, 1550, 'ground');
 
-    this.allLevelData = null;
-    this.allLevelData = JSON.parse( this.game.cache.getText('levelData') );
+    this.allLearnLevelData = null;
+    this.allLearnLevelData = JSON.parse( this.game.cache.getText('learnLevelData') );
 
-    this.scoreText = this.game.add.text(10, 10, "Score : " + this.score);
+    var style = {
+      font: "14pt Arial",
+      backgroundColor: "#212121",
+      fill: "#ffffff"
+    }
+    this.scoreText = this.game.add.text(10, 10, this.score + " out of 28 found", style);
+    this.scoreText.alpha = 0.9;
 
     this.platforms = this.game.add.group();
     this.platforms.enableBody = true;
      
-    for(var i = 0; i < this.allLevelData.allPlatformData.length; i++){
-      var platform = this.platforms.create( this.allLevelData.allPlatformData[i].x, this.allLevelData.allPlatformData[i].y, "platform" );
+    for(var i = 0; i < this.allLearnLevelData.allPlatformData.length; i++){
+      var platform = this.platforms.create( this.allLearnLevelData.allPlatformData[i].x, this.allLearnLevelData.allPlatformData[i].y, "platform" );
     }
 
     this.platforms.setAll('body.allowGravity', false);
@@ -78,8 +82,8 @@ var GameState = {
     this.ladders = this.game.add.group();
     this.ladders.enableBody = true;
      
-    for(var i = 0; i < this.allLevelData.ladders.length; i++){
-      var l = this.ladders.create( this.allLevelData.ladders[i].x, this.allLevelData.ladders[i].y, "ladder" );
+    for(var i = 0; i < this.allLearnLevelData.ladders.length; i++){
+      var l = this.ladders.create( this.allLearnLevelData.ladders[i].x, this.allLearnLevelData.ladders[i].y, "ladder" );
       l.anchor.setTo(0.5);
     }
 
@@ -87,90 +91,56 @@ var GameState = {
     this.ladders.setAll('body.immovable', true);   
 
 
-    var arrayOfNumbers = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27];
-
-    var pick1 = game.rnd.pick(arrayOfNumbers);
-    arrayOfNumbers = this.deleteInArray(arrayOfNumbers, pick1);
-    
-    var pick2 = game.rnd.pick(arrayOfNumbers);
-    arrayOfNumbers = this.deleteInArray(arrayOfNumbers, pick2);
-    
-    var pick3 = game.rnd.pick(arrayOfNumbers);
-    arrayOfNumbers = this.deleteInArray(arrayOfNumbers, pick3);
-    
-    var pick4 = game.rnd.pick(arrayOfNumbers);
-    arrayOfNumbers = this.deleteInArray(arrayOfNumbers, pick4);  
-    
-    //console.log(arrayOfNumbers);
-
-    //console.log("picks: " + pick1 + ", " + pick2 + ", " + pick3 + ", " + pick4 + ". ");
-
-    var picks = [
-      pick1,
-      pick2,
-      pick3,
-      pick4
-    ];
-
-    var pickForQuestion =  game.rnd.pick(picks);
-
-    //console.log(pickForQuestion);
-    //console.log(picks);
-
     this.alphabetBoxes = this.game.add.group();
     this.alphabetBoxes.enableBody = true;
-     
-    var tmp = "";
 
-    for(var i = 0; i < picks.length; i++){
+    var positions = ['right','left','left','right'];
+    var positionIndex = 0;
 
-      var xposition = -500;
-      var yposition = -500;      
+    for(var i = 0; i < this.allLearnLevelData.allPlatformData.length; i++){
+        var index = 27 - i;
 
-      switch(i){
-        case 0:
-          xposition = 160;
-          yposition = 125;
-          break;
-        case 1:
-          xposition = 160;
-          yposition = 225;
-          break;
-        case 2:
-          xposition = 160;
-          yposition = 325;
-          break;
-        case 3:
-          xposition = 160;
-          yposition = 425;
-          break;                              
-      }
+        var tmp = "";
+        var xposition = -500;
+        var yposition = -500;
+        var positionToConsider = "";
+        positionToConsider = positions[positionIndex];
 
-      tmp ="";
-      tmp = this.allLevelData.alphabets[picks[i]].image;
+        tmp ="";
+        tmp = this.allLearnLevelData.alphabets[index].image;
+        if(positionToConsider === "right") xposition = 240;
+        else xposition = 120;
 
-      alphabetBox = this.alphabetBoxes.create( xposition, yposition,  tmp);
-      alphabetBox.customParams = {};
-      tmp = tmp.replace("box_", "sound_");
-      alphabetBox.customParams.sound = this.game.add.audio( tmp );
-      alphabetBox.anchor.setTo(0.5);
-    }
+        yposition = this.allLearnLevelData.allPlatformData[i].y - 25;
+
+        positionIndex++;
+        if(positionIndex >= 4) positionIndex = 0;
+
+        var alphabetToPlace = null;
+        if(this.allLearnLevelData.allPlatformData[i].x === -10){
+          alphabetToPlace = this.alphabetBoxes.create( xposition, yposition, tmp );
+        }
+        else if(this.allLearnLevelData.allPlatformData[i].x === 260){
+          alphabetToPlace = this.alphabetBoxes.create( xposition, yposition, tmp );
+        }  
+
+        alphabetToPlace.customParams = {};
+        tmp = tmp.replace("box_", "sound_");
+        alphabetToPlace.customParams.sound = this.game.add.audio( tmp );
+        alphabetToPlace.anchor.setTo(0.5);
+    }     
+
 
     this.alphabetBoxes.setAll('body.allowGravity', false);
     this.alphabetBoxes.setAll('body.immovable', true);   
 
 
-    this.alphaBetForQuestion = this.add.sprite(40, 458, this.allLevelData.alphabets[pickForQuestion].image);
-    this.alphaBetForQuestion.anchor.setTo(0.5);
-    this.alphaBetForQuestion.scale.setTo(0.9);
-    this.game.physics.arcade.enable(this.alphaBetForQuestion);
-    this.alphaBetForQuestion.body.immovable = true; 
-    this.alphaBetForQuestion.body.allowGravity = false; 
+    
 
 
-    /*for(var i = 0; i < this.allLevelData.alphabets.length; i++){
+    /*for(var i = 0; i < this.allLearnLevelData.alphabets.length; i++){
 
-      console.log("alphabet : " + this.allLevelData.alphabets[i].name + " -> " + this.allLevelData.alphabets[i].x, "," + this.allLevelData.alphabets[i].y + " -> " + this.allLevelData.allPlatformData[i].x, "," + this.allLevelData.allPlatformData[i].y);
+      console.log("alphabet : " + this.allLearnLevelData.alphabets[i].name + " -> " + this.allLearnLevelData.alphabets[i].x, "," + this.allLearnLevelData.alphabets[i].y + " -> " + this.allLearnLevelData.allPlatformData[i].x, "," + this.allLearnLevelData.allPlatformData[i].y);
     }*/
 
 
@@ -180,7 +150,7 @@ var GameState = {
      //this.platform.body.immovable = true;  
 
     //create player
-    this.player = this.add.sprite(this.allLevelData.playerStart.x, this.allLevelData.playerStart.y, 'player', 3);
+    this.player = this.add.sprite(this.allLearnLevelData.playerStart.x, this.allLearnLevelData.playerStart.y, 'player', 3);
     this.player.anchor.setTo(0.5);
     //this.player.animations.add('walking left', [0, 1, 2, 3, 2, 1, 0], 6, true);
     this.player.animations.add('walking left', [2, 3, 4, 3], 6, true);
@@ -204,7 +174,7 @@ var GameState = {
 
   },
   refreshScoreText: function(){
-    this.scoreText.setText("Score : " + this.score);
+    this.scoreText.setText(this.score + " out of 28 found");
   },
   createOnscreenControls: function(){
     this.leftArrow= this.game.add.button(20, 535, 'leftArrowButton');
@@ -271,7 +241,11 @@ var GameState = {
     this.rightArrow.fixedToCamera = true;
     this.jumpButton.fixedToCamera = true;    
     this.moveDownButton.fixedToCamera = true;
-    this.background.fixedToCamera = true;       
+    this.background.fixedToCamera = true;  
+    this.home_link.fixedToCamera = true;      
+    this.game.world.bringToTop(this.home_link);
+    this.scoreText.fixedToCamera = true;
+    this.game.world.bringToTop(this.scoreText);
 
   },
   update: function() {
@@ -280,20 +254,17 @@ var GameState = {
 
     this.game.physics.arcade.collide(this.player, this.platforms, this.collisionDetect);
     this.game.physics.arcade.collide(this.player, this.ground, this.collisionDetect);  
-    this.game.physics.arcade.collide(this.alphaBetForQuestion, this.ground);  
-    this.game.physics.arcade.collide(this.alphaBetForQuestion, this.platforms);   
-    this.game.physics.arcade.collide(this.player, this.alphabetBoxes, this.winOrLose, null, this);   
-    this.game.physics.arcade.collide(this.player, this.alphaBetForQuestion);
+    this.game.physics.arcade.collide(this.player, this.alphabetBoxes, this.updateScore, null, this);   
     this.game.physics.arcade.collide(this.platforms, this.alphabetBoxes, this.collisionDetect);   
 
     this.game.physics.arcade.overlap(this.ladders, this.player, this.moveAlongLadder, null, this);   
 
-    if(this.cursors.left.isDown || this.player.customParams.willWalkLeft){
+    if(!this.uiBlocked && (this.cursors.left.isDown || this.player.customParams.willWalkLeft)){
       this.player.body.velocity.x = -1 * this.RUN_SPEED;
       this.player.scale.setTo(-0.9, 0.9);
       this.player.animations.play('walking left');
     }
-    else if(this.cursors.right.isDown || this.player.customParams.willWalkRight){
+    else if(!this.uiBlocked && (this.cursors.right.isDown || this.player.customParams.willWalkRight)){
       this.player.body.velocity.x = this.RUN_SPEED;
       this.player.scale.setTo(0.9, 0.9);
       this.player.animations.play('walking left');
@@ -318,39 +289,45 @@ var GameState = {
 
     
   },
-  winOrLose: function(obj1, obj2){
+  updateScore: function(obj1, obj2){
 
     if(!this.uiBlocked)
     {
-      if(obj2.key === this.alphaBetForQuestion.key){
         this.uiBlocked = true;
-        this.score += 10;
+        this.score += 1;
         this.refreshScoreText();
-        //console.log(obj2.customParams);
         obj2.customParams.sound.play();
-        this.game.time.events.add(2000, this.playAnotherTween, this);
-      }
-      else{
-        this.uiBlocked = true;
-        this.score -= 10;
-        if(this.score <= 0) this.score = 0;
-        this.refreshScoreText();
-        this.wrong_answer.play();
-        this.game.time.events.add(2000, this.playAnotherTween, this);                
-      }    
+
+        var alphabetChangeTween = this.game.add.tween(obj2);
+        alphabetChangeTween.to({
+                y : +10
+        }, 700);
+        alphabetChangeTween.start();
+        alphabetChangeTween.onComplete.add(function(){
+            obj2.kill();
+            this.uiBlocked = false;
+        }, this);
+
+        
+        //this.game.time.events.add(2000, this.playAnotherTween(obj2), this);  
+        //this.game.time.events.add(2000, this.restartForAnotherAlphabet, this);   
     }
 
     
   },
-  playAnotherTween: function(){
-    var alphabetChangeTween = this.game.add.tween(this.alphaBetForQuestion);
+  playAnotherTween: function(obj2){
+
+    obj2.kill();
+    this.uiBlocked = false;
+
+    /*var alphabetChangeTween = this.game.add.tween(this.alphaBetForQuestion);
     alphabetChangeTween.to({
             angle : +720
     }, 700);
     alphabetChangeTween.start();
     alphabetChangeTween.onComplete.add(function(){
         this.restartForAnotherAlphabet();
-    }, this);
+    }, this);*/
   },
   restartForAnotherAlphabet: function(){
     this.game.state.start('GameState', true, false, this.score);

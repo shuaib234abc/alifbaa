@@ -97,6 +97,7 @@ var PreloadState = {
 	this.load.spritesheet('player', 'assets/images/boys2.png', 48, 56);        	
     
     this.load.text('levelData', 'assets/data/level1.json');
+    this.load.text('learnLevelData', 'assets/data/learnLevel.json');
 
   },
   create: function() {    
